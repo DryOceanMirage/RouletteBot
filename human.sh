@@ -15,6 +15,4 @@ else
 		eval "$line"
 	done < $savegame
 fi
-hello
 
-test
