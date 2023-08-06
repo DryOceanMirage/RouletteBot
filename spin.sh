@@ -5,28 +5,46 @@ roulette_numbers=("0" "28" "9" "26" "30" "11" "7" "20" "32" "17" "5" "22" "34" "
 
 # Function to simulate a spin of the roulette wheel
 spin_wheel() {
-    random_index=$(( RANDOM % ${#roulette_numbers[@]} ))
-    number="${roulette_numbers[$random_index]}"
-    
-    if [[ "$number" == "0" || "$number" == "00" ]]; then
-        color="green"
-    elif (( $number % 2 == 0 )); then
-        color="black"
-    else
-        color="red"
-    fi
+	random_index=$(( RANDOM % ${#roulette_numbers[@]} ))
+	number="${roulette_numbers[$random_index]}"
+
+	if [[ "$number" == "0" || "$number" == "00" ]]; then
+		color="green"
+	elif (( $number % 2 == 0 )); then
+		color="black"
+	else
+		color="red"
+	fi
 }
 
 # Main
 spin_out() {
-clear
-echo "Welcome to the Roulette Wheel Spin!"
-echo "Press Enter to spin the wheel..."
-read
+	clear
+	echo "Welcome to the Roulette Wheel Spin!"
+	echo "Press Enter to spin the wheel or 'q' to quit..."
+	read choice
 
-spin_wheel
+	if [[ "$choice" == "q" ]]; then
+		clear
+		echo "Thanks for playing!"
+		exit 0
+	fi
 
-echo "The roulette wheel landed on: $number and $color"
-read
-spin_out
+	spin_wheel
+	
+	clear
+	echo "--------------------------------------------------"
+	echo "The roulette wheel landed on: $number and $color"
+	echo "--------------------------------------------------"
+	echo ""
+	read -p "Press Enter to spin again or 'q' to quit..." choice
+
+	if [[ "$choice" == "q" ]]; then
+		clear
+		echo "Thanks for playing!"
+		exit 0
+	else
+		spin_out
+	fi
 }
+
