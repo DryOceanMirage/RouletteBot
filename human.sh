@@ -10,10 +10,11 @@ if [[ "$savegame" == "no" || "$savegame" == "n" ]]; then
 	
 else
 	clear
+	savegame=1
 	read -p "Please enter savename(Case sensitive): " savefile
 	while IFS= read -r line; do
 		eval "$line"
-	done < $savegame
+	done < $savefile
 	hplay
 fi
 }
@@ -40,32 +41,35 @@ echo "--------------------------------------------------"
 echo "The roulette wheel landed on: $number and $color"
 echo "--------------------------------------------------"
 # Separate player input into color and amount
-if [[ "$hbet" == "red" || "$hbet" == "Red" || "$hbet" == "Black" || "$hbet" == "black" || "$hbet" == "Green" || "$hbet" == "green" || ]]; then
-	if [[ "$color" == "$hbet" ]]; then
-		hwin=$((hwin + 1))
-		hmoneywon=$((hmoneywon + bet_amount))
-		hbankroll=$((hbankroll + bet_amount))
-		echo "Congratulations! You won $bet_amount"
-	else
-		hloss=$((hloss + 1))
-		hmoneyloss=$((hmoneyloss + bet_amount))
-		hbankroll=$((hbankroll - bet_amount))
-		echo "Sorry, you lost $bet_amount"
-	fi
-else
-	if [[ "$number" == "$hbet" ]]; then
-		hwin=$((hwin + 1))
-		hmoneywon=$((hmoneywon + bet_amount * 35))
-		hbankroll=$((hbankroll + bet_amount * 35))
-		totalwin=$((bet_amount * 35))
-		echo "Congratulations! You won $totalwin"
-	else
-		hloss=$((hloss + 1))
-		hmoneyloss=$((hmoneyloss + bet_amount))
-		hbankroll=$((hbankroll - bet_amount))
-		echo "Sorry, you lost $bet_amount"
-	fi
+if [[ "$hbet" == "red" || "$hbet" == "Red" || "$hbet" == "Black" || "$hbet" == "black" || "$hbet" == "Green" || "$hbet" == "green" ]]; then
+    if [[ "$color" == "$hbet" ]]; then
+        hwin=$((hwin + 1))
+        hmoneywon=$((hmoneywon + bet_amount))
+        hbankroll=$((hbankroll + bet_amount))
+        echo "Congratulations! You won $bet_amount"
+    else
+        hloss=$((hloss + 1))
+        hmoneyloss=$((hmoneyloss + bet_amount))
+        hbankroll=$((hbankroll - bet_amount))
+        echo "Sorry, you lost $bet_amount"
+    fi
 fi
+
+if [[ "$hbet" != "red" && "$hbet" != "Red" && "$hbet" != "Black" && "$hbet" != "black" && "$hbet" != "Green" && "$hbet" != "green" ]]; then
+    if [[ "$number" == "$hbet" ]]; then
+        hwin=$((hwin + 1))
+        hmoneywon=$((hmoneywon + bet_amount * 35))
+        hbankroll=$((hbankroll + bet_amount * 35))
+        totalwin=$((bet_amount * 35))
+        echo "Congratulations! You won $totalwin"
+    else
+        hloss=$((hloss + 1))
+        hmoneyloss=$((hmoneyloss + bet_amount))
+        hbankroll=$((hbankroll - bet_amount))
+        echo "Sorry, you lost $bet_amount"
+    fi
+fi
+
 read -p "Press Enter to play again or 'q' to quit: " play_again
 if [[ "$play_again" != "q" ]]; then
 	hplay
@@ -79,14 +83,26 @@ fi
 
 #saves the game
 save_game() {
-timestamp=$(date +%Y%m%d%H%M%S)
-savefile="roulette_game_$timestamp.txt"
+if [[ "$savegame" == 1 ]]; then
+	echo "hbankroll=$hbankroll" > "$savefile"
+	echo "hwins=$hwin" >> "$savefile"
+	echo "hloss=$hloss" >> "$savefile"
+	echo "hmoneywon=$hmoneywon" >> "$savefile"
+	echo "hmoneyloss=$hmoneyloss" >> "$savefile"
+	sleep 5
+	main_menu
+else
+	timestamp=$(date +%Y%m%d%H%M%S)
+	savefile="roulette_game_$timestamp.txt"
 
-echo "Bankroll: $hbankroll" >> "$savefile"
-echo "Wins: $hwin" >> "$savefile"
-echo "Losses: $hloss" >> "$savefile"
-echo "Total Money Won: $hmoneywon" >> "$savefile"
-echo "Total Money Lost: $hmoneyloss" >> "$savefile"
+	echo "hbankroll=$hbankroll" > "$savefile"
+	echo "hwins=$hwin" >> "$savefile"
+	echo "hloss=$hloss" >> "$savefile"
+	echo "hmoneywon=$hmoneywon" >> "$savefile"
+	echo "hmoneyloss=$hmoneyloss" >> "$savefile"
 
-echo "Game saved to: $savefile"
+	echo "Game saved to: $savefile"
+	sleep 5
+	main_menu
+fi
 }
