@@ -27,7 +27,6 @@ spin_out() {
 		clear
 		echo "Thanks for playing!"
 		sleep 1
-		clear
 		main_menu
 	fi
 
@@ -44,7 +43,6 @@ spin_out() {
 		clear
 		echo "Thanks for playing!"
 		sleep 1
-		clear
 		main_menu
 		
 	else
