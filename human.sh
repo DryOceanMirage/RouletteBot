@@ -14,6 +14,7 @@ else
 	while IFS= read -r line; do
 		eval "$line"
 	done < $savegame
+	hplay
 fi
 }
 #Creates a new game
@@ -31,29 +32,40 @@ hplay
 hplay() {
 clear
 echo "Bankroll: $hbankroll"
-read -p "Place your bets (e.g., 'red 10', '28 25'): " hbet
+read -p "Place your bets (e.g. colour or number): " hbet
+read -p "Enter amount you want to bet: " bet_amount
 read -p "Spinning the wheel... Press Enter"
 spin_wheel
 echo "--------------------------------------------------"
 echo "The roulette wheel landed on: $number and $color"
 echo "--------------------------------------------------"
 # Separate player input into color and amount
-read -a bet_arr <<< "$hbet"
-bet_color="${bet_arr[0]}"
-bet_amount="${bet_arr[1]}"
-
-if [[ "$color" == "$bet_color" ]]; then
-	hwin=$((hwin + 1))
-	hmoneywon=$((hmoneywon + bet_amount))
-	hbankroll=$((hbankroll + bet_amount))
-	echo "Congratulations! You won $bet_amount"
+if [[ "$hbet" == "red" || "$hbet" == "Red" || "$hbet" == "Black" || "$hbet" == "black" || "$hbet" == "Green" || "$hbet" == "green" || ]]; then
+	if [[ "$color" == "$hbet" ]]; then
+		hwin=$((hwin + 1))
+		hmoneywon=$((hmoneywon + bet_amount))
+		hbankroll=$((hbankroll + bet_amount))
+		echo "Congratulations! You won $bet_amount"
+	else
+		hloss=$((hloss + 1))
+		hmoneyloss=$((hmoneyloss + bet_amount))
+		hbankroll=$((hbankroll - bet_amount))
+		echo "Sorry, you lost $bet_amount"
+	fi
 else
-	hloss=$((hloss + 1))
-	hmoneyloss=$((hmoneyloss + bet_amount))
-	hbankroll=$((hbankroll - bet_amount))
-	echo "Sorry, you lost $bet_amount"
+	if [[ "$number" == "$hbet" ]]; then
+		hwin=$((hwin + 1))
+		hmoneywon=$((hmoneywon + bet_amount * 35))
+		hbankroll=$((hbankroll + bet_amount * 35))
+		totalwin=$((bet_amount * 35))
+		echo "Congratulations! You won $totalwin"
+	else
+		hloss=$((hloss + 1))
+		hmoneyloss=$((hmoneyloss + bet_amount))
+		hbankroll=$((hbankroll - bet_amount))
+		echo "Sorry, you lost $bet_amount"
+	fi
 fi
-
 read -p "Press Enter to play again or 'q' to quit: " play_again
 if [[ "$play_again" != "q" ]]; then
 	hplay
@@ -64,6 +76,7 @@ else
 	echo "Total Money Won: $hmoneywon, Total Money Lost: $hmoneyloss"
 fi
 }
+
 #saves the game
 save_game() {
 timestamp=$(date +%Y%m%d%H%M%S)
