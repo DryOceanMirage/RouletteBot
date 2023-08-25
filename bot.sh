@@ -5,7 +5,7 @@ bloss=0
 bmoneywon=0
 bmoneyloss=0
 
-#is there a savefile avalible
+#if there a savefile avalible
 bot_game() {
 read -p "Do you have parameters saved(Yes/no)? " parsave
 if [[ "$parsave" == "no" || "$parsave" == "n" || "$parsave" == "No" ]]; then
@@ -25,11 +25,13 @@ clear
 
 echo "Please set up your parameters:"
 read -p "Minimum bet: " bbet
-read -p "Should the minimum bet be doubled on a loss? " doubleonloss
+read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
 read -p "Total bankroll: " bbankroll
 read -p "Betting colour: " bcolor
-read -p "Should the bot stop if bankroll reaches zero? " bbankrollzero
+read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
 read -p "Number of games that should be played: " btotalplay
+
+
 playbot
 }
 
@@ -54,11 +56,11 @@ bnumplay=$((bnumplay+1))
 }
 checkbot() {
 if [[ "$bnumplay" != "$btotalplay" ]]; then
-playbot
+	playbot
 
 else
-summary
-
+	summary
+fi
 }
 
 summary(){
