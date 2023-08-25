@@ -53,29 +53,21 @@ echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 
 }
-checkbot() {
-if [[ "$bnumplay" != "$btotalplay" ]]; then
-	brollzerocheck
 
-else
-	summary
-fi
-}
-
-brollzerocheck() {
-
-if [[ "$bbankroll" -lt "0" || "$bbankroll" -eq "0" ]]; then
+checkgame() {
+if [[ "$bnumplay" != "$btotalplay" && "$bbankroll" -gt "0" || "$bbankroll" != "0" ]]; then
 	playbot
 
 else
 	summary
 fi
-
 }
+
+
 
 summary(){
 clear
 echo "Current balance after $btotalplay games is $bbankroll."
 echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
-
+read "Press enter to continue: "
 }
