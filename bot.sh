@@ -31,7 +31,6 @@ read -p "Betting colour: " bcolor
 read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
 read -p "Number of games that should be played: " btotalplay
 
-
 playbot
 }
 
@@ -41,7 +40,7 @@ spin_wheel
 if [[ "$color" == "$bcolor" ]]; then
         hwin=$((bwin + 1))
         bmoneywon=$((bmoneywon + bet_amount))
-        hbankroll=$((bbankroll + bet_amount))
+        bbankroll=$((bbankroll + bet_amount))
         echo "Congratulations! You won $bet_amount"
 else
         bloss=$((bloss + 1))
@@ -56,13 +55,27 @@ bnumplay=$((bnumplay+1))
 }
 checkbot() {
 if [[ "$bnumplay" != "$btotalplay" ]]; then
-	playbot
+	brollzerocheck
 
 else
 	summary
 fi
 }
 
+brollzerocheck() {
+
+if [[ "$bbankroll" -lt "0" || "$bbankroll" -eq "0" ]]; then
+	playbot
+
+else
+	summary
+fi
+
+}
+
 summary(){
+clear
+echo "Current balance after $btotalplay games is $bbankroll."
+echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
 
 }
