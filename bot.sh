@@ -9,7 +9,7 @@ playbot() {
 clear
 spin_wheel
 echo "Current balance: $bbankroll"
-echo "$bbankroll $color $bet_amount" >> game$gnum.txt
+echo "$bbankroll $color $bet_amount" >> games/game$gnum.txt
 echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 if [[ "$color" == "$bcolor" ]]; then
@@ -76,6 +76,7 @@ if [[ "$bbankrollzero" == "0" ]]; then
 elif [[ "$bbankroll" -lt "0" || "$bbankroll" != "0" && "$bbankroll"-"$bet_amount" < "0" ]]; then
 	clear
 	echo "Insufficient funds"
+	bet_amount=0
 	sleep 5
 	summary
 elif [[ "$bbankrollzero" == "1" ]]; then
@@ -106,8 +107,10 @@ fi
 
 summary(){
 clear
+bwinper=$(( (bwin * 100) / bnumplay ))
 echo "Current balance after $bnumplay games is $bbankroll."
 echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
+echo "You won $bwinper% of the time which is $bwin out of $bnumplay games"
 read -p "Would you like to save the current simulation settings? " savebot
 if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
 	timestamp=$(date +%Y%m%d%H%M%S)
