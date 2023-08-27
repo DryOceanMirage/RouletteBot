@@ -59,11 +59,11 @@ clear
 
 echo "Please set up your parameters:"
 read -p "Minimum bet: " bbet
-read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
 read -p "Total bankroll: " bbankroll
 read -p "Betting colour: " bcolor
-read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
 read -p "Number of games that should be played: " btotalplay
+read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
+read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
 
 playbot
 }
@@ -106,8 +106,9 @@ summary(){
 clear
 echo "Current balance after $bnumplay games is $bbankroll."
 echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
-read -p "Would you like to save the current simulation settings" savebot
-if [[ "$savebot" == "1" ]]; then
+read -p "Would you like to save the current simulation settings? " savebot
+if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
+	
 read -p "Press enter to continue: "
 main_menu
 }
