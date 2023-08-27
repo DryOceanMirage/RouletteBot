@@ -66,7 +66,14 @@ fi
 
 }
 checkmoney() {
-
+if [[ "$bbankrollzero" == "0" ]]; then
+	playbot
+elif [[ "$bbankroll" -gt "0" || "$bbankroll" != "0" && "$bbankroll"-"$bet_amount" < "0" ]]; then
+	echo "Insufficient funds"
+	sleep 5
+	summary
+else
+	echo "checkmoney error"
 }
 
 doubleloss() {
@@ -79,13 +86,14 @@ fi
 }
 
 checkgame() {
-if [[ "$bnumplay" != "$btotalplay" && "$bbankroll" -gt "0" || "$bbankroll" != "0"  ]]; then
-	playbot
+if [[ "$bnumplay" != "$btotalplay"  ]]; then
+	checkmoney
 
 else
 	summary
 fi
 }
+
 
 
 
