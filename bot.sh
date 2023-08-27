@@ -9,7 +9,7 @@ playbot() {
 clear
 spin_wheel
 echo "Current balance: $bbankroll"
-echo "$bbankroll $color $bet_amount" >> bankrollduringgame3
+echo "$bbankroll $color $bet_amount" >> game$gnum
 echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 if [[ "$color" == "$bcolor" ]]; then
@@ -64,6 +64,7 @@ read -p "Betting colour: " bcolor
 read -p "Number of games that should be played: " btotalplay
 read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
 read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
+read -p "Enter game number: " gnum
 
 playbot
 }
@@ -114,7 +115,6 @@ if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
 	echo "bbet=$bbet" > "$savefile"
 	echo "bbankroll=$bbankroll" >> "$savefile"
 	echo "bcolor=$bcolor" >> "$savefile"
-	echo "btotalplay=$btotalplay" >> "$savefile"
 	echo "doubleonloss=$doubleonloss" >> "$savefile"
 	echo "bbankrollzero=$bbankrollzero" >> "$savefile"
 
