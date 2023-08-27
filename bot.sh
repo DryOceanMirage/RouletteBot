@@ -22,6 +22,7 @@ else
 	while IFS= read -r line; do
 		eval "$line"
 	done < $parfile
+	read -p "Number of games that should be played: " btotalplay
 	playbot
 fi
 }
@@ -64,6 +65,10 @@ else
 fi
 
 }
+checkmoney() {
+
+}
+
 doubleloss() {
 if [[ "doubleonloss" == "1" ]]; then
 	bet_amount=$(($lastbet*2))
@@ -74,7 +79,7 @@ fi
 }
 
 checkgame() {
-if [[ "$bnumplay" != "$btotalplay" && "$bbankroll" -gt "0" || "$bbankroll" != "0" ]]; then
+if [[ "$bnumplay" != "$btotalplay" && "$bbankroll" -gt "0" || "$bbankroll" != "0"  ]]; then
 	playbot
 
 else
