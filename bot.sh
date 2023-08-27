@@ -50,6 +50,7 @@ else
 		eval "$line"
 	done < $parfile
 	read -p "Number of games that should be played: " btotalplay
+	read -p "Enter game number: " gnum
 	playbot
 fi
 }
