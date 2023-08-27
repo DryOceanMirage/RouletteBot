@@ -9,7 +9,7 @@ playbot() {
 clear
 spin_wheel
 echo "Current balance: $bbankroll"
-echo "$bbankroll $color $bet_amount" >> game$gnum
+echo "$bbankroll $color $bet_amount" >> game$gnum.txt
 echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 if [[ "$color" == "$bcolor" ]]; then
@@ -119,6 +119,8 @@ if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
 	echo "bbankrollzero=$bbankrollzero" >> "$savefile"
 
 	echo "Game saved to: $savefile"
+	read -p "Press enter to continue: "
+	main_menu
 else
 	read -p "Press enter to continue: "
 	main_menu
