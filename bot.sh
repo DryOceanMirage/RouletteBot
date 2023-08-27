@@ -5,6 +5,33 @@ bloss=0
 bmoneywon=0
 bmoneyloss=0
 
+playbot() {
+clear
+spin_wheel
+echo "Current balance: $bbankroll"
+echo "$bbankroll $color $bet_amount" >> bankrollduringgame3
+echo "Playing game $bnumplay out of $btotalplay"
+bnumplay=$((bnumplay+1))
+if [[ "$color" == "$bcolor" ]]; then
+        bwin=$((bwin + 1))
+        bmoneywon=$((bmoneywon + bet_amount))
+        bbankroll=$((bbankroll + bet_amount))
+        lostlast=0
+        lastbet=$bbet
+        bet_amount=$bbet
+        echo "win"
+        checkgame
+else
+        bloss=$((bloss + 1))
+        bmoneyloss=$((bmoneyloss + bet_amount))
+        bbankroll=$((bbankroll - bet_amount))
+        losslast=1
+        lastbet=$bet_amount
+        echo "loss"
+        doubleloss
+fi
+
+}
 #if there a savefile avalible
 bot_game() {
 read -p "Do you have parameters saved(Yes/no)? " parsave
@@ -41,47 +68,18 @@ read -p "Number of games that should be played: " btotalplay
 playbot
 }
 
-playbot() {
-clear
-spin_wheel
-echo "Current balance: $bbankroll"
-echo "Playing game $bnumplay out of $btotalplay"
-bnumplay=$((bnumplay+1))
-if [[ "$color" == "$bcolor" ]]; then
-        bwin=$((bwin + 1))
-        bmoneywon=$((bmoneywon + bet_amount))
-        bbankroll=$((bbankroll + bet_amount))
-        lostlast=0
-        lastbet=$bbet
-        bet_amount=$bbet
-        echo "Congratulations! You won $bet_amount"
-else
-        bloss=$((bloss + 1))
-        bmoneyloss=$((bmoneyloss + bet_amount))
-        bbankroll=$((bbankroll - bet_amount))
-        losslast=1
-        echo "Sorry, you lost $bet_amount"
-        doubleloss
-fi
-
-}
 checkmoney() {
 if [[ "$bbankrollzero" == "0" ]]; then
 	playbot
-elif [[ "$bbankroll" -gt "0" || "$bbankroll" != "0" && "$bbankroll"-"$bet_amount" < "0" ]]; then
+elif [[ "$bbankroll" -lt "0" || "$bbankroll" != "0" && "$bbankroll"-"$bet_amount" < "0" ]]; then
+	clear
 	echo "Insufficient funds"
 	sleep 5
 	summary
+elif [[ "$bbankrollzero" == "1" ]]; then
+	playbot
 else
 	echo "checkmoney error"
-}
-
-doubleloss() {
-if [[ "doubleonloss" == "1" ]]; then
-	bet_amount=$(($lastbet*2))
-	checkgame
-else
-	checkgame
 fi
 }
 
@@ -94,12 +92,22 @@ else
 fi
 }
 
-
+doubleloss() {
+if [[ "$doubleonloss" == "1" ]]; then
+	bet_amount=$((lastbet * 2))
+	checkgame
+else
+	checkgame
+fi
+}
 
 
 summary(){
 clear
-echo "Current balance after $btotalplay games is $bbankroll."
+echo "Current balance after $bnumplay games is $bbankroll."
 echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
-read "Press enter to continue: "
+read -p "Would you like to save the current simulation settings" savebot
+if [[ "$savebot" == "1" ]]; then
+read -p "Press enter to continue: "
+main_menu
 }
