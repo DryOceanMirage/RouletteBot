@@ -9,7 +9,7 @@ playbot() {
 clear
 spin_wheel
 echo "Current balance: $bbankroll"
-echo "$bbankroll $color $bet_amount" >> games/game$gnum.txt
+echo "$bbankroll" >> games/game$gnum.txt
 echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 if [[ "$color" == "$bcolor" ]]; then
