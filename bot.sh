@@ -108,7 +108,19 @@ echo "Current balance after $bnumplay games is $bbankroll."
 echo "The total money that you won is $bmoneywon and the total lost is $bmoneyloss"
 read -p "Would you like to save the current simulation settings? " savebot
 if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
-	
-read -p "Press enter to continue: "
-main_menu
+	timestamp=$(date +%Y%m%d%H%M%S)
+	savefile="roulette_simulation_$timestamp.txt"
+
+	echo "bbet=$bbet" > "$savefile"
+	echo "bbankroll=$bbankroll" >> "$savefile"
+	echo "bcolor=$bcolor" >> "$savefile"
+	echo "btotalplay=$btotalplay" >> "$savefile"
+	echo "doubleonloss=$doubleonloss" >> "$savefile"
+	echo "bbankrollzero=$bbankrollzero" >> "$savefile"
+
+	echo "Game saved to: $savefile"
+else
+	read -p "Press enter to continue: "
+	main_menu
+fi
 }
