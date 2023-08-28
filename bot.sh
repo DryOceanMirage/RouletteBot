@@ -9,7 +9,7 @@ playbot() {
 clear
 spin_wheel
 echo "Current balance: $bbankroll"
-echo "$bbankroll" >> games/game$gnum.txt
+echo "$bbankroll" >> games/game$timestamp.txt
 echo "Playing game $bnumplay out of $btotalplay"
 bnumplay=$((bnumplay+1))
 if [[ "$color" == "$bcolor" ]]; then
@@ -51,8 +51,7 @@ else
 	done < $parfile
 	read -p "Number of games that should be played: " btotalplay
 	ogbbankroll="$bbankroll"
-	read -p "Enter game number: " gnum
-	
+	timestamp=$(date +%Y%m%d%H%M%S)
 	playbot
 fi
 }
@@ -68,7 +67,7 @@ read -p "Betting colour: " bcolor
 read -p "Number of games that should be played: " btotalplay
 read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
 read -p "Should the bot stop if bankroll reaches zero(type 1 for yes on 0 for no)? " bbankrollzero
-read -p "Enter game number: " gnum
+timestamp=$(date +%Y%m%d%H%M%S)
 
 playbot
 }
