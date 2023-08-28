@@ -35,6 +35,9 @@ clear
 echo "Bankroll: $hbankroll"
 read -p "Place your bets (e.g. colour or number): " hbet
 read -p "Enter amount you want to bet: " bet_amount
+hbankplusbet=$((hbankroll+bet_amount))
+# check if money exists to bet
+checkhmoney
 read -p "Spinning the wheel... Press Enter"
 spin_wheel
 echo "--------------------------------------------------"
@@ -68,6 +71,7 @@ if [[ "$hbet" != "red" && "$hbet" != "Red" && "$hbet" != "Black" && "$hbet" != "
         hbankroll=$((hbankroll - bet_amount))
         echo "Sorry, you lost $bet_amount"
     fi
+
 fi
 
 read -p "Press Enter to play again or 'q' to quit: " play_again
@@ -80,7 +84,15 @@ else
 	echo "Total Money Won: $hmoneywon, Total Money Lost: $hmoneyloss"
 fi
 }
-
+checkhmoney(){
+if [[ "$hbankplusbet" -lt 0 ]]; then
+	echo "Not enough money"
+	sleep 3
+	hplay
+else
+	
+fi
+}
 #saves the game
 save_game() {
 if [[ "$savegame" == 1 ]]; then
@@ -89,7 +101,7 @@ if [[ "$savegame" == 1 ]]; then
 	echo "hloss=$hloss" >> "$savefile"
 	echo "hmoneywon=$hmoneywon" >> "$savefile"
 	echo "hmoneyloss=$hmoneyloss" >> "$savefile"
-	sleep 5
+	sleep 3
 	main_menu
 else
 	timestamp=$(date +%Y%m%d%H%M%S)
@@ -102,7 +114,7 @@ else
 	echo "hmoneyloss=$hmoneyloss" >> "$savefile"
 
 	echo "Game saved to: $savefile"
-	sleep 5
+	sleep 3
 	main_menu
 fi
 }
