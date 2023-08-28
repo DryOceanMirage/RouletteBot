@@ -50,7 +50,9 @@ else
 		eval "$line"
 	done < $parfile
 	read -p "Number of games that should be played: " btotalplay
+	ogbbankroll="$bbankroll"
 	read -p "Enter game number: " gnum
+	
 	playbot
 fi
 }
@@ -61,6 +63,7 @@ clear
 echo "Please set up your parameters:"
 read -p "Minimum bet: " bbet
 read -p "Total bankroll: " bbankroll
+ogbbankroll="$bbankroll"
 read -p "Betting colour: " bcolor
 read -p "Number of games that should be played: " btotalplay
 read -p "Should the minimum bet be doubled on a loss(type 1 for yes on 0 for no)? " doubleonloss
@@ -117,7 +120,7 @@ if [[ "$savebot" == "y" || "$savebot" == "yes" || "$savebot" == "y" ]]; then
 	savefile="roulette_simulation_$timestamp.txt"
 
 	echo "bbet=$bbet" > "$savefile"
-	echo "bbankroll=$bbankroll" >> "$savefile"
+	echo "bbankroll=$ogbbankroll" >> "$savefile"
 	echo "bcolor=$bcolor" >> "$savefile"
 	echo "doubleonloss=$doubleonloss" >> "$savefile"
 	echo "bbankrollzero=$bbankrollzero" >> "$savefile"
