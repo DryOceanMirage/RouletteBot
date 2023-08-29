@@ -86,11 +86,10 @@ fi
 }
 checkhmoney(){
 if [[ "$hbankplusbet" -lt 0 ]]; then
+	clear
 	echo "Not enough money"
 	sleep 3
 	hplay
-else
-	
 fi
 }
 #saves the game
